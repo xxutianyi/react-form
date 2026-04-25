@@ -9,7 +9,7 @@ A React form component using shadcn/ui & filepond.
 npm install @winglab/react-form
 
 # Dependencies
-npm install filepond react-filepond filepond-plugin-file-validate-type filepond-plugin-image-preview
+npm install radix-ui filepond react-filepond filepond-plugin-file-validate-type filepond-plugin-image-preview
 ```
 
 ## Basic usage

@@ -180,7 +180,9 @@ export function MutiSelectField({ name, label, description, placeholder, options
   optionsKey = optionsKey ?? { value: 'value', label: 'label' };
 
   const formApi = useFormContext();
-  const [open, setOpen] = useState(false);
+
+  if (formApi === null) return null;
+
   const currentValue = formApi?.getFieldValue(name);
   const selectedItems = options.filter((option) => currentValue.includes(option[optionsKey.value]));
 
@@ -195,13 +197,11 @@ export function MutiSelectField({ name, label, description, placeholder, options
     }
   }
 
-  if (formApi === null) return null;
-
   return (
     <Field>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover modal={true}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="h-auto min-h-10 w-full justify-between bg-muted px-3 py-2">
             <div className="flex flex-wrap gap-2 overflow-hidden">
@@ -218,12 +218,12 @@ export function MutiSelectField({ name, label, description, placeholder, options
         <PopoverContent
           align="start"
           onWheel={(e) => e.stopPropagation()}
-          className="w-(--radix-popover-trigger-width) p-0"
+          className="pointer-events-auto w-(--radix-popover-trigger-width) p-0"
         >
           <Command>
             <CommandInput placeholder="搜索..." />
             <CommandList>
-              <CommandEmpty>没有找到匹配项</CommandEmpty>
+              <CommandEmpty>无匹配项</CommandEmpty>
               <CommandGroup>
                 {options.map((option, index) => (
                   <CommandItem

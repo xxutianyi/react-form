@@ -4,7 +4,6 @@ import { defineConfig } from 'tsdown';
 
 export default defineConfig({
   dts: true,
-  css: { inject: true },
   exports: true,
   sourcemap: true,
   platform: 'browser',
