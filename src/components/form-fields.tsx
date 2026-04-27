@@ -21,6 +21,7 @@ import { FilePond, type FilePondProps, registerPlugin } from 'react-filepond';
 export type FieldProps = {
   name: string;
   label?: string;
+  disabled?: boolean;
   description?: string;
   placeholder?: string;
 };
@@ -43,7 +44,7 @@ export type UploadProps = Omit<FieldProps, 'placeholder'> & {
  * @param props
  * @constructor
  */
-export function TextField({ name, label, description, placeholder }: FieldProps) {
+export function TextField({ name, label, description, disabled, placeholder }: FieldProps) {
   const formApi = useFormContext();
   if (formApi === null) return null;
 
@@ -55,6 +56,7 @@ export function TextField({ name, label, description, placeholder }: FieldProps)
         id={name}
         name={name}
         aria-label={name}
+        disabled={disabled}
         value={formApi.getFieldValue(name)}
         onChange={(e) => formApi.setFieldValue(name, e.target.value)}
         placeholder={placeholder ?? '请输入'}
@@ -71,7 +73,7 @@ export function TextField({ name, label, description, placeholder }: FieldProps)
  * @param props
  * @constructor
  */
-export function PasswordField({ name, label, description, placeholder }: FieldProps) {
+export function PasswordField({ name, label, description, disabled, placeholder }: FieldProps) {
   const formApi = useFormContext();
   const [visible, setVisible] = useState(false);
 
@@ -86,6 +88,7 @@ export function PasswordField({ name, label, description, placeholder }: FieldPr
           id={name}
           name={name}
           aria-label={name}
+          disabled={disabled}
           value={formApi.getFieldValue(name)}
           onChange={(e) => formApi.setFieldValue(name, e.target.value)}
           placeholder={placeholder ?? '请输入'}
@@ -111,7 +114,7 @@ export function PasswordField({ name, label, description, placeholder }: FieldPr
  * @param props
  * @constructor
  */
-export function TextareaField({ name, label, description, placeholder }: FieldProps) {
+export function TextareaField({ name, label, description, disabled, placeholder }: FieldProps) {
   const formApi = useFormContext();
   if (formApi === null) return null;
 
@@ -123,6 +126,7 @@ export function TextareaField({ name, label, description, placeholder }: FieldPr
         id={name}
         name={name}
         aria-label={name}
+        disabled={disabled}
         value={formApi.getFieldValue(name)}
         onChange={(e) => formApi.setFieldValue(name, e.target.value)}
         placeholder={placeholder ?? '请输入'}
@@ -139,7 +143,7 @@ export function TextareaField({ name, label, description, placeholder }: FieldPr
  * @param props
  * @constructor
  */
-export function SelectField({ name, label, description, placeholder, options, optionsKey }: SelectProps) {
+export function SelectField({ name, label, description, disabled, placeholder, options, optionsKey }: SelectProps) {
   optionsKey = optionsKey ?? { value: 'value', label: 'label' };
 
   const formApi = useFormContext();
@@ -150,7 +154,11 @@ export function SelectField({ name, label, description, placeholder, options, op
     <Field>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
-      <Select value={formApi.getFieldValue(name)} onValueChange={(value) => formApi.setFieldValue(name, value)}>
+      <Select
+        disabled={disabled}
+        value={formApi.getFieldValue(name)}
+        onValueChange={(value) => formApi.setFieldValue(name, value)}
+      >
         <SelectTrigger>
           <SelectValue placeholder={placeholder ?? '请选择'} />
         </SelectTrigger>
@@ -176,7 +184,7 @@ export function SelectField({ name, label, description, placeholder, options, op
  * @param props
  * @constructor
  */
-export function MutiSelectField({ name, label, description, placeholder, options, optionsKey }: SelectProps) {
+export function MutiSelectField({ name, label, description, disabled, placeholder, options, optionsKey }: SelectProps) {
   optionsKey = optionsKey ?? { value: 'value', label: 'label' };
 
   const formApi = useFormContext();
@@ -201,9 +209,13 @@ export function MutiSelectField({ name, label, description, placeholder, options
     <Field>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
-      <Popover modal={true}>
+      <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="h-auto min-h-10 w-full justify-between bg-muted px-3 py-2">
+          <Button
+            variant="outline"
+            disabled={disabled}
+            className="h-auto min-h-10 w-full justify-between bg-input/50! px-3 py-2"
+          >
             <div className="flex flex-wrap gap-2 overflow-hidden">
               {selectedItems.length > 0 ? (
                 selectedItems.map((item, index) => <Badge key={index}>{item[optionsKey.label]}</Badge>)
@@ -252,7 +264,17 @@ export function MutiSelectField({ name, label, description, placeholder, options
   );
 }
 
-export function UploadField({ name, label, description, max = 1, accept, preview, server, filepond }: UploadProps) {
+export function UploadField({
+  name,
+  label,
+  description,
+  disabled,
+  max = 1,
+  accept,
+  preview,
+  server,
+  filepond,
+}: UploadProps) {
   registerPlugin(FilePondPluginFileValidateType);
   if (preview) {
     registerPlugin(FilePondPluginImagePreview);
@@ -281,6 +303,7 @@ export function UploadField({ name, label, description, max = 1, accept, preview
         server={server}
         maxFiles={max}
         allowMultiple={max > 1}
+        disabled={disabled}
         acceptedFileTypes={accept}
         onremovefile={onFilesChange}
         onprocessfile={onFilesChange}

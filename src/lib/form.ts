@@ -3,7 +3,7 @@ export type FormErrors = Record<string, string[] | undefined>;
 
 export type UseFormProps = {
   initialValues?: FormData | null;
-  onSubmit?: (values?: FormData | null) => Promise<void>;
+  onSubmit?: (values: FormData) => Promise<void>;
 };
 
 export type FormApi = {

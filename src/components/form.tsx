@@ -9,7 +9,7 @@ export type FormProps = {
   children: ReactNode;
   className?: string;
   initialValues?: FormData | null;
-  onSubmit?: (values?: FormData | null) => Promise<void>;
+  onSubmit?: (values: FormData) => Promise<void | any>;
 };
 
 const FormContext = createContext<FormApi | null>(null);

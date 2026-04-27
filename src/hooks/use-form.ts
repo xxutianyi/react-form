@@ -42,7 +42,7 @@ export function useForm(props: UseFormProps): FormApi {
 
   function handleSubmit(e?: any) {
     e?.preventDefault();
-    onSubmit?.(values);
+    onSubmit?.(values ?? {});
   }
 
   useEffect(() => {
